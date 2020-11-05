@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY main/src .
 
 # command to run on container start
-CMD [ "python", "./hello_world.py" ]
+CMD [ "python", "./service.py" ]
