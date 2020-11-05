@@ -1,17 +1,22 @@
-from threading import Thread
+from queue import Queue
 
 from sportsreference.nfl.schedule import Schedule
 from sportsreference.nfl.teams import Teams
 
 from main.src.domain_model import Team, Event
+from main.src.logger import Logger
+from main.src.operator import Operator
 
 
-class Connector(Thread):
-    def __init__(self, queue):
-        Thread.__init__(self)
-        self.queue = queue
+class Connector(Operator):
+    def __init__(self, logger: Logger, sink_queue: Queue = None):
+        super(Connector, self).__init__(
+            name=__name__,
+            logger=logger,
+            sink_queue=sink_queue,
+        )
 
-    def run(self):
+    def process(self):
         try:
             teams = []
             api_teams = Teams()
@@ -46,7 +51,7 @@ class Connector(Thread):
                     print(f"Put {event_counter}: {event.boxscore_index}")
                     event_counter += 1
 
-                    self.queue.put(
+                    self.put_sink(
                         Event(
                             event_id=event.boxscore_index,
                             home_team_abbrev=home_team_abbrev,
@@ -60,4 +65,4 @@ class Connector(Thread):
                     )
         finally:
             print("Connector done")
-            self.queue.task_done()
+            self.sink_queue.task_done()

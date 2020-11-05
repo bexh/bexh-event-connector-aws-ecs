@@ -16,10 +16,10 @@ class Core:
 
         event_queue = Queue()
 
-        connector = Connector(event_queue)
-        connector.start()
+        connector = Connector(logger=self.logger, sink_queue=event_queue)
+        event_handler = EventHandler(logger=self.logger, source_queue=event_queue)
 
-        event_handler = EventHandler(event_queue)
+        connector.start()
         event_handler.start()
         event_handler.join()
 
