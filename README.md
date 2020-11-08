@@ -60,4 +60,7 @@ Commands:
     test           Runs all test cases
     install        Installs pipfile libraries
     install-dev    Installs pipfile libraries for development purposes
+    docker-up      Runs redis and redis commander locally
+    docker-down    Tear down redis and redis commander
+    local-setup    Spin up local resources
 ```

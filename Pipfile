@@ -5,10 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 pytest="*"
+awscli-local="*"
 
 [packages]
 sportsreference="*"
-ratelimit="*"
+#ratelimit="*"
+redis="*"
+boto3="*"
 
 [requires]
 python_version = "3.8"

@@ -1,2 +1,4 @@
 sportsreference
-ratelimit
+# ratelimit
+redis
+boto3
