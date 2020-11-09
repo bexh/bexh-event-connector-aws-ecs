@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from typing import Literal
 
 class Team:
     def __init__(self, name: str, abbrev: str):
@@ -8,9 +8,12 @@ class Team:
 
 
 class Event:
+    Sport = Literal["basketball", "football", "hockey", "baseball"]
+
     def __init__(
             self,
             event_id: str,
+            sport: Sport,
             home_team_abbrev: str,
             away_team_abbrev: str,
             home_team_score: int,
@@ -20,6 +23,7 @@ class Event:
             date: datetime
     ):
         self.event_id = event_id
+        self.sport = sport
         self.home_team_abbrev = home_team_abbrev
         self.away_team_abbrev = away_team_abbrev
         self.home_team_score = home_team_score

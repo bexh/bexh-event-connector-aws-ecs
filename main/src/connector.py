@@ -9,9 +9,10 @@ from main.src.logger import Logger
 from main.src.operator import Operator
 
 
-class Connector(Operator):
+class FootballConnector(Operator):
     def __init__(self, logger: Logger, sink_queue: Queue = None):
         self.teams = []
+        self.sport = "football"
         api_teams = Teams()
         for team in api_teams:
             self.teams.append(
@@ -21,7 +22,7 @@ class Connector(Operator):
                 )
             )
 
-        super(Connector, self).__init__(
+        super(FootballConnector, self).__init__(
             name=__name__,
             logger=logger,
             sink_queue=sink_queue,
@@ -64,6 +65,7 @@ class Connector(Operator):
                 self.put_sink(
                     Event(
                         event_id=event.boxscore_index,
+                        sport=self.sport,
                         home_team_abbrev=home_team_abbrev,
                         away_team_abbrev=away_team_abbrev,
                         home_team_score=home_team_score,
