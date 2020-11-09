@@ -32,7 +32,7 @@ class EventHandler(Operator):
                 # NEW EVENT to exchange
                 if not cached_status and status == "ACTIVE":
                     self.handle_new_event(event=event, status=status)
-                # EVENT to be removed from exchange
+                # EVENT to be removed from exchange and send winner to outgoing kinesis
                 elif cached_status == "ACTIVE" and status == "INACTIVE":
                     self.handle_inactive_event(event=event, status=status)
 
@@ -42,7 +42,7 @@ class EventHandler(Operator):
 
         # tell outgoing stream that new event is available
         payload = {
-            "type": "NEW_EVENT",
+            "action": "ACTIVE_EVENT",
             "timestamp": get_current_utc_iso(),
             "value": {
                 "event_id": event.event_id,
@@ -72,16 +72,28 @@ class EventHandler(Operator):
 
         # poison pill the event for the incoming stream so that it cancels bets for that event
         payload = {
-            "type": "INACTIVE_EVENT",
+            "action": "INACTIVE_EVENT",
             "timestamp": get_current_utc_iso(),
             "value": {
-                "event_id": event.event_id
+                "event_id": event.event_id,
+                "home_team_abbrev": event.home_team_abbrev,
+                "away_team_abbrev": event.away_team_abbrev,
+                "home_team_score": event.home_team_score,
+                "away_team_score": event.away_team_score,
+                "winning_team_abbrev": event.winning_team_abbrev,
+                "losing_team_abbrev": event.losing_team_abbrev,
+                "date": dt_to_iso(event.date)
             }
         }
         self.logger.debug(payload)
         try:
             self.kinesis_client.put_record(
                 StreamName=os.environ.get("INCOMING_KINESIS_STREAM_NAME"),
+                Data=dumps(payload),
+                PartitionKey=event.event_id
+            )
+            self.kinesis_client.put_record(
+                StreamName=os.environ.get("OUTGOING_KINESIS_STREAM_NAME"),
                 Data=dumps(payload),
                 PartitionKey=event.event_id
             )
