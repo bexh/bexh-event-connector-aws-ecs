@@ -46,6 +46,7 @@ class EventHandler(Operator):
             "timestamp": get_current_utc_iso(),
             "value": {
                 "event_id": event.event_id,
+                "sport": event.sport,
                 "home_team_abbrev": event.home_team_abbrev,
                 "away_team_abbrev": event.away_team_abbrev,
                 "home_team_score": event.home_team_score,
@@ -76,6 +77,7 @@ class EventHandler(Operator):
             "timestamp": get_current_utc_iso(),
             "value": {
                 "event_id": event.event_id,
+                "sport": event.sport,
                 "home_team_abbrev": event.home_team_abbrev,
                 "away_team_abbrev": event.away_team_abbrev,
                 "home_team_score": event.home_team_score,

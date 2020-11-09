@@ -1,6 +1,6 @@
 from queue import Queue
 import timeit
-from main.src.connector import Connector
+from main.src.connector import FootballConnector
 from main.src.event_handler import EventHandler
 from main.src.logger import LoggerFactory
 import os
@@ -16,10 +16,10 @@ class Core:
 
         event_queue = Queue()
 
-        connector = Connector(logger=self.logger, sink_queue=event_queue)
+        football_connector = FootballConnector(logger=self.logger, sink_queue=event_queue)
         event_handler = EventHandler(logger=self.logger, source_queue=event_queue)
 
-        connector.start()
+        football_connector.start()
         event_handler.start()
         event_handler.join()
 
