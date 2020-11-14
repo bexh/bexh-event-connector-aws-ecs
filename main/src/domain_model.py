@@ -1,5 +1,7 @@
 from datetime import datetime
 from typing import Literal
+from json import dumps
+
 
 class Team:
     def __init__(self, name: str, abbrev: str):
@@ -31,3 +33,20 @@ class Event:
         self.winning_team_abbrev = winning_team_abbrev
         self.losing_team_abbrev = losing_team_abbrev
         self.date = date
+
+
+class StatusDetails:
+    Status = Literal["ACTIVE", "INACTIVE"]
+
+    def __init__(self, status: Status = None, home_team_abbrev: str = None, away_team_abbrev: str = None):
+        self.status = status
+        self.home_team_abbrev = home_team_abbrev
+        self.away_team_abbrev = away_team_abbrev
+
+    def __str__(self):
+        dict_form = {
+            "status": self.status,
+            "home_team_abbrev": self.home_team_abbrev,
+            "away_team_abbrev": self.away_team_abbrev
+        }
+        return dumps(dict_form)
