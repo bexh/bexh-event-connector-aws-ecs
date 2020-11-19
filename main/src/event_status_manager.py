@@ -9,7 +9,7 @@ class EventStatusManager(object):
     def __init__(self):
         host = os.environ.get("REDIS_HOST")
         port = os.environ.get("REDIS_PORT")
-        self._r = redis.StrictRedis(host=host, port=port, db=0)
+        self._r = redis.StrictRedis(host=host, port=port, db=0, ssl_cert_reqs=None)
 
     def set(self, event_id: str, status_details: StatusDetails):
         self._r.set(name=f"event:{event_id}", value=str(status_details))
