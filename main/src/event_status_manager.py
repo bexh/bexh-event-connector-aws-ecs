@@ -1,8 +1,8 @@
 import os
-from main.src.domain_model import StatusDetails
 from json import loads
 
 import redis
+from src.domain_model import StatusDetails
 
 
 class EventStatusManager(object):

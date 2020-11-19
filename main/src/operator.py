@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from threading import Thread
 from queue import Queue
-from main.src.logger import Logger
+from src.logger import Logger
 
 
 class Operator(ABC, Thread):

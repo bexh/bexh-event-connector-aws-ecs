@@ -1,9 +1,10 @@
-from queue import Queue
-import timeit
-from main.src.connector import FootballConnector
-from main.src.event_handler import EventHandler
-from main.src.logger import LoggerFactory
 import os
+import timeit
+from queue import Queue
+
+from src.connector import FootballConnector
+from src.event_handler import EventHandler
+from src.logger import LoggerFactory
 
 
 class Core:

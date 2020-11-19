@@ -1,6 +1,6 @@
 from datetime import datetime
-from typing import Literal
 from json import dumps
+from typing import Literal
 
 
 class Team:
