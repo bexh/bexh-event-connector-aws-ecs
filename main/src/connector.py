@@ -4,9 +4,9 @@ from time import time, sleep
 from sportsreference.nfl.schedule import Schedule
 from sportsreference.nfl.teams import Teams
 
-from main.src.domain_model import Team, Event
-from main.src.logger import Logger
-from main.src.operator import Operator
+from src.domain_model import Team, Event
+from src.logger import Logger
+from src.operator import Operator
 
 
 class FootballConnector(Operator):

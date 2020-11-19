@@ -3,12 +3,11 @@ from json import dumps
 from queue import Queue
 
 import boto3
-
-from main.src.domain_model import Event, StatusDetails
-from main.src.event_status_manager import EventStatusManager
-from main.src.logger import Logger
-from main.src.operator import Operator
-from main.src.utils import get_current_utc_iso, dt_to_iso
+from src.domain_model import Event, StatusDetails
+from src.event_status_manager import EventStatusManager
+from src.logger import Logger
+from src.operator import Operator
+from src.utils import get_current_utc_iso, dt_to_iso
 
 
 class EventHandler(Operator):
@@ -61,10 +60,10 @@ class EventHandler(Operator):
                 "date": dt_to_iso(event.date)
             }
         }
-        self.logger.debug(payload)
+        self.logger.debug(f"New event: {payload}")
         try:
             self.kinesis_client.put_record(
-                StreamName=os.environ.get("OUTGOING_KINESIS_STREAM_NAME"),
+                StreamName=os.environ.get("OUTGOING_EVENTS_KINESIS_STREAM_NAME"),
                 Data=dumps(payload),
                 PartitionKey=event.event_id
             )
@@ -92,15 +91,15 @@ class EventHandler(Operator):
                 "date": dt_to_iso(event.date)
             }
         }
-        self.logger.debug(payload)
+        self.logger.debug(f"Inactive event: {payload}")
         try:
             self.kinesis_client.put_record(
-                StreamName=os.environ.get("INCOMING_KINESIS_STREAM_NAME"),
+                StreamName=os.environ.get("INCOMING_BETS_KINESIS_STREAM_NAME"),
                 Data=dumps(payload),
                 PartitionKey=event.event_id
             )
             self.kinesis_client.put_record(
-                StreamName=os.environ.get("OUTGOING_KINESIS_STREAM_NAME"),
+                StreamName=os.environ.get("OUTGOING_EVENTS_KINESIS_STREAM_NAME"),
                 Data=dumps(payload),
                 PartitionKey=event.event_id
             )
