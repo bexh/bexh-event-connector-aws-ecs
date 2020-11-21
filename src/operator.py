@@ -14,11 +14,12 @@ class Operator(ABC, Thread):
         self.logger.info(f"Starting Operator: {name}")
 
     def run(self):
-        try:
-            self.process()
-        except Exception as e:
-            self.logger.error(f"Error in Operator- {self.name}: {e}")
-            raise e
+        while True:
+            try:
+                self.process()
+            except Exception as e:
+                self.logger.error(f"Error in Operator- {self.name}: {e}")
+                raise e
 
     def get_source(self):
         if self.source_queue:
