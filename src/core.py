@@ -20,8 +20,10 @@ class Core:
         football_connector = FootballConnector(logger=self.logger, sink_queue=event_queue)
         event_handler = EventHandler(logger=self.logger, source_queue=event_queue)
 
-        football_connector.start()
+        football_connector.daemon = True
+        event_handler.daemon = True
+
         event_handler.start()
-        event_handler.join()
+        football_connector.start()
 
         self.logger.info(f"Duration: {timeit.default_timer() - start}")

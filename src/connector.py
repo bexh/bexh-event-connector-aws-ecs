@@ -42,6 +42,7 @@ class FootballConnector(Operator):
 
     def get_events(self):
         self.logger.info("Getting events")
+
         for team in self.teams:
             team_abbrev = team.abbrev
             schedule = Schedule(team_abbrev)

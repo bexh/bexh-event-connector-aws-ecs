@@ -10,8 +10,9 @@ install-dev:
 install:
 	@+pipenv install --python ${PYTHON_VERSION}
 
+.PHONY: test
 test:
-	pipenv run pytest -q main/test/tests.py
+	pipenv run pytest
 
 docker-up:
 	{ \
