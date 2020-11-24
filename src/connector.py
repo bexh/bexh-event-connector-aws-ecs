@@ -13,6 +13,7 @@ class FootballConnector(Operator):
     def __init__(self, logger: Logger, sink_queue: Queue = None):
         self.teams = []
         self.sport = "football"
+        sleep(0.01)
         api_teams = Teams()
         for team in api_teams:
             self.teams.append(
@@ -45,6 +46,7 @@ class FootballConnector(Operator):
 
         for team in self.teams:
             team_abbrev = team.abbrev
+            sleep(0.01)
             schedule = Schedule(team_abbrev)
             for event in schedule:
                 home_team_abbrev = team_abbrev if event.location == "Home" else event.opponent_abbr
