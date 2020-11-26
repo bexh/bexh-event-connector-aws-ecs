@@ -11,16 +11,14 @@ from src.operator import Operator
 
 class FootballConnector(Operator):
     def __init__(self, logger: Logger, sink_queue: Queue = None):
-        self.teams = []
+        self.teams = {}
         self.sport = "football"
         sleep(0.01)
         api_teams = Teams()
         for team in api_teams:
-            self.teams.append(
-                Team(
-                    name=team.name,
-                    abbrev=team.abbreviation
-                )
+            self.teams[team.abbreviation] = Team(
+                name=team.name,
+                abbrev=team.abbreviation
             )
 
         super(FootballConnector, self).__init__(
@@ -44,13 +42,15 @@ class FootballConnector(Operator):
     def get_events(self):
         self.logger.info("Getting events")
 
-        for team in self.teams:
-            team_abbrev = team.abbrev
+        for team_abbrev in self.teams:
             sleep(0.01)
             schedule = Schedule(team_abbrev)
             for event in schedule:
                 home_team_abbrev = team_abbrev if event.location == "Home" else event.opponent_abbr
                 away_team_abbrev = event.opponent_abbr if event.location == "Home" else team_abbrev
+
+                home_team_name = self.teams[home_team_abbrev].name
+                away_team_name = self.teams[away_team_abbrev].name
 
                 home_team_score = event.points_scored if home_team_abbrev == team_abbrev else event.points_allowed
                 away_team_score = event.points_allowed if home_team_abbrev == team_abbrev else event.points_scored
@@ -71,6 +71,8 @@ class FootballConnector(Operator):
                         sport=self.sport,
                         home_team_abbrev=home_team_abbrev,
                         away_team_abbrev=away_team_abbrev,
+                        home_team_name=home_team_name,
+                        away_team_name=away_team_name,
                         home_team_score=home_team_score,
                         away_team_score=away_team_score,
                         winning_team_abbrev=winning_team_abbrev,
